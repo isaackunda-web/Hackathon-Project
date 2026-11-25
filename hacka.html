@@ -1,0 +1,2501 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sustainbility | Planet Is Our Home | Local Networks &amp; Experience Validation</title>
+  <style>
+    /* =========================================================================
+       1. DESIGN TOKENS & RESET (ZERO EXTERNAL DEPENDENCIES)
+       ========================================================================= */
+    :root {
+      --bg-canvas: #f8fafc;
+      --bg-surface: #ffffff;
+      --bg-subtle: #f1f5f9;
+      --border-light: #e2e8f0;
+      --border-strong: #cbd5e1;
+      --text-primary: #0f172a;
+      --text-secondary: #475569;
+      --text-muted: #64748b;
+      --emerald-50: #ecfdf5;
+      --emerald-100: #d1fae5;
+      --emerald-200: #a7f3d0;
+      --emerald-600: #059669;
+      --emerald-700: #047857;
+      --emerald-800: #065f46;
+      --emerald-900: #064e3b;
+      --amber-50: #fffbeb;
+      --amber-200: #fde68a;
+      --amber-700: #b45309;
+      --rose-50: #fff1f2;
+      --rose-200: #fecdd3;
+      --rose-700: #be123c;
+      --blue-50: #eff6ff;
+      --blue-700: #1d4ed8;
+      --shadow-xs: 0 1px 2px rgba(15, 23, 42, 0.05);
+      --shadow-sm: 0 2px 6px rgba(15, 23, 42, 0.06);
+      --shadow-md: 0 10px 25px -5px rgba(15, 23, 42, 0.1);
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 16px;
+      --radius-full: 9999px;
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, Helvetica, Arial, sans-serif;
+      background-color: var(--bg-canvas);
+      color: var(--text-primary);
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Bulletproof Clickability Guarantees */
+    button, [role="button"], select, input, textarea, label {
+      pointer-events: auto;
+      font-family: inherit;
+    }
+
+    button {
+      cursor: pointer;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+      transition: background-color 0.15s ease, border-color 0.15s ease, transform 0.1s ease, box-shadow 0.15s ease;
+    }
+
+    button:active {
+      transform: scale(0.985);
+    }
+
+    button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible {
+      outline: 2px solid var(--emerald-600);
+      outline-offset: 2px;
+    }
+
+    .decorative-layer {
+      pointer-events: none !important;
+    }
+
+    /* =========================================================================
+       2. LAYOUT & HEADER
+       ========================================================================= */
+    .container {
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 0 16px;
+    }
+
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(255, 255, 255, 0.97);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--border-light);
+      box-shadow: var(--shadow-xs);
+    }
+
+    .header-top {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 12px 0;
+    }
+
+    .brand-btn {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: transparent;
+      border: none;
+      padding: 4px;
+      text-align: left;
+      border-radius: var(--radius-md);
+    }
+
+    .brand-btn:hover .brand-icon {
+      background: var(--emerald-800);
+    }
+
+    .brand-icon {
+      width: 42px;
+      height: 42px;
+      border-radius: var(--radius-md);
+      background: var(--emerald-700);
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      box-shadow: var(--shadow-xs);
+    }
+
+    .brand-title-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .brand-name {
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: var(--text-primary);
+      letter-spacing: -0.02em;
+    }
+
+    .track-pill {
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 2px 9px;
+      border-radius: var(--radius-full);
+      background: var(--emerald-50);
+      color: var(--emerald-800);
+      border: 1px solid var(--emerald-200);
+    }
+
+    .brand-sub {
+      font-size: 0.76rem;
+      color: var(--text-muted);
+      margin-top: 1px;
+    }
+
+    .header-actions {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .score-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--bg-subtle);
+      border: 1px solid var(--border-light);
+      padding: 7px 12px;
+      border-radius: var(--radius-md);
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+    }
+
+    .pulse-dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: var(--emerald-600);
+      display: inline-block;
+    }
+
+    .score-val {
+      font-size: 0.92rem;
+      font-weight: 800;
+      color: var(--emerald-800);
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      padding: 9px 15px;
+      border-radius: var(--radius-md);
+      font-size: 0.84rem;
+      font-weight: 700;
+      border: 1px solid transparent;
+      text-decoration: none;
+    }
+
+    .btn-primary {
+      background: var(--emerald-700);
+      color: #ffffff;
+      box-shadow: var(--shadow-xs);
+    }
+
+    .btn-primary:hover {
+      background: var(--emerald-800);
+    }
+
+    .btn-secondary {
+      background: var(--emerald-50);
+      color: var(--emerald-900);
+      border-color: var(--emerald-200);
+    }
+
+    .btn-secondary:hover {
+      background: var(--emerald-100);
+    }
+
+    .btn-outline {
+      background: #ffffff;
+      color: var(--text-secondary);
+      border-color: var(--border-strong);
+    }
+
+    .btn-outline:hover {
+      background: var(--bg-subtle);
+      color: var(--text-primary);
+    }
+
+    .btn-lg {
+      padding: 13px 22px;
+      font-size: 0.95rem;
+    }
+
+    .btn-sm {
+      padding: 6px 11px;
+      font-size: 0.76rem;
+      border-radius: var(--radius-sm);
+    }
+
+    /* Navigation Tab Bar */
+    .nav-tabs {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      overflow-x: auto;
+      padding: 6px 0 10px;
+      border-top: 1px solid #f1f5f9;
+    }
+
+    .tab-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      white-space: nowrap;
+      padding: 8px 14px;
+      border-radius: var(--radius-md);
+      font-size: 0.84rem;
+      font-weight: 700;
+      background: transparent;
+      color: var(--text-secondary);
+      border: 1px solid transparent;
+    }
+
+    .tab-btn:hover {
+      background: var(--bg-subtle);
+      color: var(--text-primary);
+    }
+
+    .tab-btn.active {
+      background: var(--emerald-700);
+      color: #ffffff;
+      box-shadow: var(--shadow-xs);
+    }
+
+    .tab-num {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      font-size: 0.72rem;
+      font-weight: 800;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--border-light);
+      color: var(--text-primary);
+    }
+
+    .tab-btn.active .tab-num {
+      background: #ffffff;
+      color: var(--emerald-800);
+    }
+
+    /* Active Sample Banner */
+    .profile-banner {
+      background: var(--emerald-50);
+      border-bottom: 1px solid var(--emerald-200);
+      padding: 8px 0;
+      font-size: 0.8rem;
+      color: var(--emerald-900);
+    }
+
+    .profile-banner-inner {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .badge-solid {
+      background: var(--emerald-700);
+      color: #ffffff;
+      font-size: 0.68rem;
+      font-weight: 800;
+      padding: 2px 8px;
+      border-radius: 6px;
+      letter-spacing: 0.03em;
+    }
+
+    /* =========================================================================
+       3. CARDS, GRIDS & TYPOGRAPHY
+       ========================================================================= */
+    main {
+      padding: 24px 0 48px;
+      min-height: calc(100vh - 180px);
+    }
+
+    .tab-panel {
+      display: none;
+      animation: fadeIn 0.2s ease;
+    }
+
+    .tab-panel.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      box-shadow: var(--shadow-sm);
+      margin-bottom: 24px;
+    }
+
+    .eyebrow {
+      display: inline-block;
+      font-size: 0.73rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--emerald-700);
+      margin-bottom: 4px;
+    }
+
+    h1, h2, h3, h4 {
+      margin: 0;
+      color: var(--text-primary);
+      letter-spacing: -0.015em;
+    }
+
+    .section-title {
+      font-size: 1.45rem;
+      font-weight: 800;
+    }
+
+    .section-desc {
+      font-size: 0.92rem;
+      color: var(--text-secondary);
+      margin: 6px 0 0;
+      max-width: 780px;
+    }
+
+    .section-header-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+
+    /* Hero Grid */
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.35fr 1fr;
+      gap: 24px;
+      align-items: stretch;
+    }
+
+    @media (max-width: 920px) {
+      .hero-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .hero-title {
+      font-size: 2.2rem;
+      font-weight: 800;
+      line-height: 1.15;
+      margin: 10px 0 14px;
+    }
+
+    .hero-title span {
+      color: var(--emerald-700);
+    }
+
+    .hero-cta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin: 22px 0 16px;
+    }
+
+    .demo-callout {
+      background: var(--bg-subtle);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-md);
+      padding: 10px 14px;
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .link-btn {
+      background: none;
+      border: none;
+      padding: 0;
+      color: var(--emerald-700);
+      font-weight: 800;
+      text-decoration: underline;
+      font-size: inherit;
+    }
+
+    .link-btn:hover {
+      color: var(--emerald-900);
+    }
+
+    .snapshot-box {
+      background: var(--bg-subtle);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-lg);
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .kpi-grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin: 14px 0;
+    }
+
+    .kpi-grid-4 {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+    }
+
+    @media (max-width: 860px) {
+      .kpi-grid-4 { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (max-width: 500px) {
+      .kpi-grid-4, .kpi-grid-2 { grid-template-columns: 1fr; }
+    }
+
+    .mini-kpi {
+      background: #ffffff;
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-md);
+      padding: 14px;
+    }
+
+    .mini-kpi-label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--text-muted);
+    }
+
+    .mini-kpi-num {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: var(--text-primary);
+      margin: 4px 0 2px;
+    }
+
+    .mini-kpi-sub {
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: var(--emerald-700);
+    }
+
+    .progress-track {
+      width: 100%;
+      height: 10px;
+      background: var(--border-light);
+      border-radius: var(--radius-full);
+      overflow: hidden;
+      margin: 8px 0;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: var(--emerald-600);
+      border-radius: var(--radius-full);
+      transition: width 0.3s ease;
+    }
+
+    /* =========================================================================
+       4. INTERACTIVE PROBLEM CARDS & SDG CARDS (TAB 1)
+       ========================================================================= */
+    .highlight-pulse {
+      box-shadow: 0 0 0 4px rgba(5, 150, 105, 0.28);
+      border-color: var(--emerald-600) !important;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+
+    @media (max-width: 960px) {
+      .grid-3 { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (max-width: 640px) {
+      .grid-3, .grid-2 { grid-template-columns: 1fr; }
+    }
+
+    .problem-card {
+      background: #ffffff;
+      border: 1.5px solid var(--border-light);
+      border-radius: var(--radius-md);
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: border-color 0.15s ease, background-color 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .problem-card:hover {
+      border-color: var(--emerald-600);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .problem-card.verified {
+      border-color: var(--emerald-600);
+      background: #f4fbf7;
+    }
+
+    .card-top-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .tag-emerald {
+      background: var(--emerald-100);
+      color: var(--emerald-900);
+      font-size: 0.72rem;
+      font-weight: 800;
+      padding: 3px 8px;
+      border-radius: 6px;
+    }
+
+    .tag-gray {
+      background: var(--bg-subtle);
+      color: var(--text-secondary);
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 6px;
+    }
+
+    .evidence-box {
+      background: var(--bg-subtle);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-sm);
+      padding: 8px 10px;
+      font-size: 0.78rem;
+      color: var(--text-secondary);
+      margin: 10px 0 12px;
+    }
+
+    .card-btn-row {
+      display: flex;
+      gap: 8px;
+    }
+
+    /* Expandable SDG Cards */
+    .sdg-card {
+      background: #ffffff;
+      border: 1.5px solid var(--border-light);
+      border-radius: var(--radius-md);
+      padding: 16px;
+      cursor: pointer;
+      text-align: left;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .sdg-card:hover {
+      border-color: var(--emerald-600);
+      background: #fafffd;
+    }
+
+    .sdg-card.expanded {
+      border-color: var(--emerald-700);
+      background: var(--emerald-50);
+    }
+
+    .sdg-badge {
+      display: inline-block;
+      color: #ffffff;
+      font-size: 0.74rem;
+      font-weight: 800;
+      padding: 3px 9px;
+      border-radius: 6px;
+    }
+
+    .sdg-detail-drawer {
+      margin-top: 12px;
+      padding-top: 10px;
+      border-top: 1px dashed var(--border-strong);
+      font-size: 0.78rem;
+      color: var(--text-primary);
+    }
+
+    /* =========================================================================
+       5. FORMS, FILTER PILLS & LOCAL PROJECTS (TAB 2)
+       ========================================================================= */
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+    }
+
+    @media (max-width: 860px) {
+      .form-grid { grid-template-columns: 1fr 1fr; }
+    }
+
+    @media (max-width: 580px) {
+      .form-grid { grid-template-columns: 1fr; }
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .form-label {
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 9px 12px;
+      border: 1px solid var(--border-strong);
+      border-radius: var(--radius-sm);
+      font-size: 0.86rem;
+      color: var(--text-primary);
+      background: #ffffff;
+    }
+
+    .form-control:focus {
+      outline: none;
+      border-color: var(--emerald-600);
+      box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.14);
+    }
+
+    .filter-bar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .filter-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .filter-pill {
+      padding: 6px 13px;
+      border-radius: var(--radius-full);
+      font-size: 0.78rem;
+      font-weight: 700;
+      border: 1px solid var(--border-strong);
+      background: #ffffff;
+      color: var(--text-secondary);
+    }
+
+    .filter-pill:hover {
+      background: var(--bg-subtle);
+    }
+
+    .filter-pill.active {
+      background: var(--emerald-700);
+      color: #ffffff;
+      border-color: var(--emerald-700);
+    }
+
+    .project-metrics-strip {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      background: var(--bg-subtle);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-sm);
+      padding: 8px;
+      text-align: center;
+      margin: 12px 0;
+      font-size: 0.76rem;
+    }
+
+    /* =========================================================================
+       6. COMPETENCY SLIDERS, SVG RADAR & ROADMAP (TAB 3)
+       ========================================================================= */
+    .split-2 {
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: 24px;
+    }
+
+    @media (max-width: 920px) {
+      .split-2 { grid-template-columns: 1fr; }
+    }
+
+    .slider-card {
+      background: var(--bg-subtle);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-md);
+      padding: 14px;
+      margin-bottom: 12px;
+    }
+
+    .slider-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+
+    .stepper-controls {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .step-btn {
+      width: 30px;
+      height: 30px;
+      border-radius: 8px;
+      border: 1px solid var(--border-strong);
+      background: #ffffff;
+      font-size: 1rem;
+      font-weight: 800;
+      color: var(--text-primary);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .step-btn:hover {
+      background: var(--emerald-50);
+      border-color: var(--emerald-600);
+      color: var(--emerald-800);
+    }
+
+    input[type="range"] {
+      flex: 1;
+      accent-color: var(--emerald-700);
+      height: 6px;
+      cursor: pointer;
+    }
+
+    .phase-tabs {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 12px;
+      flex-wrap: wrap;
+    }
+
+    .phase-tab-btn {
+      flex: 1;
+      min-width: 110px;
+      padding: 8px 10px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border-strong);
+      background: #ffffff;
+      font-size: 0.76rem;
+      font-weight: 700;
+      color: var(--text-secondary);
+      text-align: center;
+    }
+
+    .phase-tab-btn.active {
+      background: var(--emerald-700);
+      color: #ffffff;
+      border-color: var(--emerald-700);
+    }
+
+    .checklist-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      background: #ffffff;
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-sm);
+      padding: 11px 12px;
+      margin-bottom: 8px;
+      cursor: pointer;
+    }
+
+    .checklist-item:hover {
+      border-color: var(--emerald-600);
+    }
+
+    .checklist-item.checked {
+      background: var(--emerald-50);
+      border-color: var(--emerald-200);
+    }
+
+    /* =========================================================================
+       7. POLICY STATUS SELECTORS (TAB 4)
+       ========================================================================= */
+    .policy-card {
+      background: #ffffff;
+      border: 1.5px solid var(--border-light);
+      border-radius: var(--radius-md);
+      padding: 16px;
+      margin-bottom: 12px;
+    }
+
+    .status-pill-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 12px;
+    }
+
+    .status-choice {
+      padding: 6px 12px;
+      border-radius: var(--radius-sm);
+      font-size: 0.76rem;
+      font-weight: 700;
+      border: 1px solid var(--border-strong);
+      background: #ffffff;
+      color: var(--text-secondary);
+    }
+
+    .status-choice.selected-aligned {
+      background: var(--emerald-700);
+      color: #ffffff;
+      border-color: var(--emerald-700);
+    }
+
+    .status-choice.selected-progress {
+      background: var(--amber-50);
+      color: var(--amber-700);
+      border-color: var(--amber-200);
+    }
+
+    .status-choice.selected-gap {
+      background: var(--rose-50);
+      color: var(--rose-700);
+      border-color: var(--rose-200);
+    }
+
+    /* =========================================================================
+       8. MODAL & TOAST NOTIFICATIONS
+       ========================================================================= */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 200;
+      background: rgba(15, 23, 42, 0.55);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+
+    .modal-backdrop.open {
+      display: flex;
+    }
+
+    .modal-dialog {
+      background: #ffffff;
+      border-radius: var(--radius-lg);
+      max-width: 520px;
+      width: 100%;
+      padding: 24px;
+      box-shadow: var(--shadow-md);
+      border: 1px solid var(--border-light);
+    }
+
+    .toast-stack {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 300;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      pointer-events: none;
+    }
+
+    .toast-item {
+      pointer-events: auto;
+      background: #0f172a;
+      color: #ffffff;
+      padding: 11px 16px;
+      border-radius: var(--radius-md);
+      font-size: 0.83rem;
+      font-weight: 600;
+      box-shadow: var(--shadow-md);
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      border-left: 4px solid var(--emerald-600);
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    .site-footer {
+      background: #ffffff;
+      border-top: 1px solid var(--border-light);
+      padding: 18px 0;
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+
+    @media print {
+      .no-print { display: none !important; }
+      body { background: #ffffff; }
+      .card { box-shadow: none; border: 1px solid #cbd5e1; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Toast Container -->
+  <div id="toast-stack" class="toast-stack" aria-live="polite"></div>
+
+  <!-- Evidence Edit Modal (Works cleanly for both Problem & Project evidence) -->
+  <div id="evidence-modal" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <div class="modal-dialog">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+        <h3 id="modal-title" style="font-size:1.1rem; font-weight:800;">Edit Field Evidence &amp; Verification Notes</h3>
+        <button type="button" id="btn-close-modal" class="btn btn-outline btn-sm" aria-label="Close modal">&times; Close</button>
+      </div>
+      <p id="modal-subtitle" style="font-size:0.82rem; color:var(--text-secondary); margin:0 0 12px;"></p>
+      <div class="form-group" style="margin-bottom:16px;">
+        <label for="modal-evidence-input" class="form-label">Grounded Field Evidence / Community Observation</label>
+        <textarea id="modal-evidence-input" rows="4" class="form-control" placeholder="Enter local measurements, community observations, or verification sources..."></textarea>
+      </div>
+      <div style="display:flex; justify-content:flex-end; gap:8px;">
+        <button type="button" id="btn-cancel-modal" class="btn btn-outline">Cancel</button>
+        <button type="button" id="btn-save-modal" class="btn btn-primary">Save Field Evidence</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Sticky Top Navigation Header -->
+  <header class="site-header no-print">
+    <div class="container">
+      <div class="header-top">
+        <!-- Brand Logo (Returns to Tab 1) -->
+        <button type="button" id="btn-brand-home" class="brand-btn" title="Return to Overview">
+          <div class="brand-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="9"></circle>
+              <path d="M3.6 9h16.8M3.6 15h16.8"></path>
+              <path d="M11.5 3a17 17 0 0 0 0 18M12.5 3a17 17 0 0 1 0 18"></path>
+            </svg>
+          </div>
+          <div>
+            <div class="brand-title-row">
+              <span class="brand-name">Planet Is Our Home</span>
+              <span class="track-pill">Track 3: Validation</span>
+            </div>
+            <div class="brand-sub">Local Networks &amp; Experience &bull; UN SDGs 13, 8, 10 &amp; 17</div>
+          </div>
+        </button>
+
+        <!-- Right Header Controls -->
+        <div class="header-actions">
+          <div class="score-pill" title="Overall Track 3 Validation Readiness Score">
+            <span class="pulse-dot"></span>
+            <span>Validation Score:</span>
+            <span id="header-score" class="score-val">0%</span>
+          </div>
+
+          <button type="button" id="btn-load-sample" class="btn btn-primary">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+              <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+            </svg>
+            <span>Load Sample Environmental Profile</span>
+          </button>
+
+          <button type="button" id="btn-reset-demo" class="btn btn-outline">
+            Reset Demo
+          </button>
+        </div>
+      </div>
+
+      <!-- 5 Interactive Navigation Tabs -->
+      <nav class="nav-tabs" aria-label="Validation Workflow Steps">
+        <button type="button" class="tab-btn active" data-tab="overview">
+          <span class="tab-num">1</span>
+          <span>1. Overview</span>
+        </button>
+        <button type="button" class="tab-btn" data-tab="local">
+          <span class="tab-num">2</span>
+          <span>2. Local Env. Management</span>
+        </button>
+        <button type="button" class="tab-btn" data-tab="competency">
+          <span class="tab-num">3</span>
+          <span>3. Competency &amp; Roadmap</span>
+        </button>
+        <button type="button" class="tab-btn" data-tab="policy">
+          <span class="tab-num">4</span>
+          <span>4. National Policy</span>
+        </button>
+        <button type="button" class="tab-btn" data-tab="report">
+          <span class="tab-num">5</span>
+          <span>5. Validation Report</span>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Active Profile Confirmation Banner -->
+  <div id="profile-banner" class="profile-banner hidden no-print">
+    <div class="container profile-banner-inner">
+      <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+        <span class="badge-solid">ACTIVE NETWORK PROFILE</span>
+        <strong id="banner-network-name">Turkana West / Kakuma Community Resilience Network (ASAL Zone)</strong>
+      </div>
+      <span style="font-weight:600; color:var(--emerald-800);">All 5 validation screens populated &amp; ready for live demo</span>
+    </div>
+  </div>
+
+  <!-- Main Content Area -->
+  <main class="container">
+
+    <!-- =================================================================== -->
+    <!-- TAB 1: OVERVIEW & GROUND-TRUTH PROBLEM VERIFICATION                 -->
+    <!-- =================================================================== -->
+    <section id="panel-overview" class="tab-panel active">
+      <div class="card">
+        <div class="hero-grid">
+          <div>
+            <span class="eyebrow">Local Networks &amp; Experience Hackathon &bull; Track 3</span>
+            <h1 class="hero-title">Verify Real Problem.<br /><span>Validate Grounded Solutions.</span></h1>
+            <p class="section-desc">
+              <strong>Planet Is Our Home</strong> equips local networks, youth cooperatives, and community stewards to verify real environmental and socioeconomic challenges from lived experience—bridging field evidence into policy-aligned action across <strong>UN SDGs 13, 8, 10, and 17</strong>.
+            </p>
+
+            <div class="hero-cta-row">
+              <button type="button" id="btn-hero-verify-solution" class="btn btn-primary btn-lg">
+                <span>Verify the Solution</span>
+                <span aria-hidden="true">&rarr;</span>
+              </button>
+              <button type="button" id="btn-hero-verify-problem" class="btn btn-secondary btn-lg">
+                <span> A Real Problem</span>
+              </button>
+            </div>
+
+            <div class="demo-callout">
+              <span>Instant Live Demo:</span>
+              <button type="button" id="btn-inline-sample" class="link-btn">Load Sample Environmental Profile (Turkana West / Kakuma)</button>
+              <span>to pre-fill all 5 tabs in one click.</span>
+            </div>
+          </div>
+
+          <!-- Live Validation Snapshot -->
+          <div class="snapshot-box">
+            <div>
+              <div style="display:flex; justify-content:space-between; align-items:center;">
+                <span style="font-size:0.75rem; font-weight:800; text-transform:uppercase; color:var(--text-muted);">Live Validation Snapshot</span>
+                <span class="tag-emerald">Interactive State</span>
+              </div>
+
+              <div class="kpi-grid-2">
+                <div class="mini-kpi">
+                  <div class="mini-kpi-label">Problems Verified</div>
+                  <div id="snap-problems" class="mini-kpi-num">0 / 6</div>
+                  <div class="mini-kpi-sub">Ground-truth evidence</div>
+                </div>
+                <div class="mini-kpi">
+                  <div class="mini-kpi-label">Local Actions Verified</div>
+                  <div id="snap-projects" class="mini-kpi-num">0 / 0</div>
+                  <div class="mini-kpi-sub">Peer-validated projects</div>
+                </div>
+                <div class="mini-kpi">
+                  <div class="mini-kpi-label"> &amp; Green Competency</div>
+                  <div id="snap-competency" class="mini-kpi-num">0%</div>
+                  <div class="mini-kpi-sub">Skills &amp; roadmap progress</div>
+                </div>
+                <div class="mini-kpi">
+                  <div class="mini-kpi-label">National Policy Bridge</div>
+                  <div id="snap-policy" class="mini-kpi-num">0%</div>
+                  <div class="mini-kpi-sub">Regulatory &amp; fund links</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="mini-kpi">
+              <div style="display:flex; justify-content:space-between; font-size:0.78rem; font-weight:800;">
+                <span>Overall Validation Readiness</span>
+                <span id="snap-overall-text" style="color:var(--emerald-700);">0%</span>
+              </div>
+              <div class="progress-track">
+                <div id="snap-overall-bar" class="progress-fill" style="width:0%;"></div>
+              </div>
+              <div style="font-size:0.72rem; color:var(--text-muted);">
+                Verify field problems, validate local projects, assess competencies, and align national policies.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 6-Problem Ground-Truth Verification Grid -->
+      <div id="problem-verification-card" class="card">
+        <div class="section-header-row">
+          <div>
+            <span class="eyebrow">Step 1 &bull; Verify Real Problem</span>
+            <h2 class="section-title">6 Core Climate &amp; Equity Problems Addressed</h2>
+            <p class="section-desc">
+              Click <strong>Verify on Ground</strong> on any problem card below to confirm lived community impact, or click <strong>Edit Field Evidence</strong> to log local observations.
+            </p>
+          </div>
+          <button type="button" id="btn-verify-all-problems" class="btn btn-secondary">
+            Verify All 6 Problems
+          </button>
+        </div>
+
+        <div id="problems-grid" class="grid-3"></div>
+      </div>
+
+      <!-- 4 Expandable UN SDG Alignment Cards -->
+      <div class="card">
+        <div class="section-header-row">
+          <div>
+            <span class="eyebrow">Multi-Goal Impact Framework</span>
+            <h2 class="section-title">UN SDGs 13, 8, 10 &amp; 17 Alignment (Click Any Card to Expand)</h2>
+            <p class="section-desc">
+              Inspect how validating grassroots climate action simultaneously drives decent green employment, reduces inequality, and strengthens local-to-national governance.
+            </p>
+          </div>
+        </div>
+
+        <div id="sdg-cards-grid" class="kpi-grid-4"></div>
+      </div>
+    </section>
+
+    <!-- =================================================================== -->
+    <!-- TAB 2: LOCAL ENVIRONMENTAL MANAGEMENT                               -->
+    <!-- =================================================================== -->
+    <section id="panel-local" class="tab-panel">
+      <div class="card">
+        <div class="section-header-row">
+          <div>
+            <span class="eyebrow">Step 2 &bull; Grounded Solution Verification</span>
+            <h2 class="section-title">Local Environmental Management &amp; Community Registry</h2>
+            <p class="section-desc">
+              Register community-led climate and environmental projects, filter by UN SDG impact, inspect field evidence, and toggle peer verification.
+            </p>
+          </div>
+          <button type="button" id="btn-toggle-project-form" class="btn btn-primary">
+            + Add New Local Project
+          </button>
+        </div>
+
+        <!-- Dynamic KPIs -->
+        <div class="kpi-grid-4">
+          <div class="mini-kpi">
+            <div class="mini-kpi-label">Registered Local Projects</div>
+            <div id="kpi-proj-total" class="mini-kpi-num">0</div>
+            <div id="kpi-proj-verified" class="mini-kpi-sub">0 peer-verified</div>
+          </div>
+          <div class="mini-kpi">
+            <div class="mini-kpi-label">Households Protected</div>
+            <div id="kpi-proj-households" class="mini-kpi-num">0</div>
+            <div class="mini-kpi-sub">Water, food &amp; flood safety</div>
+          </div>
+          <div class="mini-kpi">
+            <div class="mini-kpi-label">Green Jobs Created (SDG 8)</div>
+            <div id="kpi-proj-jobs" class="mini-kpi-num">0</div>
+            <div class="mini-kpi-sub">Youth &amp; local stewards</div>
+          </div>
+          <div class="mini-kpi">
+            <div class="mini-kpi-label">Annual CO₂ Reduced</div>
+            <div id="kpi-proj-co2" class="mini-kpi-num" style="color:var(--emerald-700);">0 t</div>
+            <div class="mini-kpi-sub">Verified mitigation impact</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Add New Local Project Form -->
+      <div id="new-project-form-card" class="card" style="border-color:var(--emerald-200);">
+        <h3 style="font-size:1.05rem; font-weight:800; margin-bottom:14px;">Log &amp; Validate New Local Environmental Project</h3>
+        <form id="form-add-project">
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="inp-proj-title" class="form-label">Project Title *</label>
+              <input id="inp-proj-title" type="text" class="form-control" required placeholder="Community Rock Catchment & Water Pan" />
+            </div>
+
+            <div class="form-group">
+              <label for="inp-proj-category" class="form-label">Problem Category *</label>
+              <select id="inp-proj-category" class="form-control">
+                <option value="Water & Food Insecurity">Water &amp; Food Insecurity</option>
+                <option value="Rising Greenhouse Gas Emissions">Rising Greenhouse Gas Emissions</option>
+                <option value="Extreme Weather & Disasters">Extreme Weather &amp; Disasters</option>
+                <option value="Policy & Planning Gaps">Policy &amp; Planning Gaps</option>
+                <option value="Low Climate Literacy & Preparedness">Low Climate Literacy &amp; Preparedness</option>
+                <option value="Unequal Finance & Local Capacity">Unequal Finance &amp; Local Capacity</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="inp-proj-sdg" class="form-label">Primary UN SDG Tag *</label>
+              <select id="inp-proj-sdg" class="form-control">
+                <option value="SDG 13">SDG 13 &mdash; Climate Action</option>
+                <option value="SDG 8">SDG 8 &mdash; Decent Work &amp; Green Jobs</option>
+                <option value="SDG 10">SDG 10 &mdash; Reduced Inequalities</option>
+                <option value="SDG 17">SDG 17 &mdash; Partnerships for Goals</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="inp-proj-households" class="form-label">Households Protected *</label>
+              <input id="inp-proj-households" type="number" min="1" class="form-control" required />
+            </div>
+
+            <div class="form-group">
+              <label for="inp-proj-jobs" class="form-label">Green Jobs Created *</label>
+              <input id="inp-proj-jobs" type="number" min="0" class="form-control" required />
+            </div>
+
+            <div class="form-group">
+              <label for="inp-proj-co2" class="form-label">Annual CO₂ Reduced (tons/yr) *</label>
+              <input id="inp-proj-co2" type="number" min="0" class="form-control" required />
+            </div>
+          </div>
+
+          <div class="form-group" style="margin-top:12px;">
+            <label for="inp-proj-evidence" class="form-label">Field Verification Evidence &amp; Ward Location *</label>
+            <input id="inp-proj-evidence" type="text" class="form-control" required placeholder="Kakuma Ward 2 — Geo-tagged photos, water gauge logs & 25 household signatures" />
+          </div>
+
+          <div style="display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:12px; margin-top:14px; padding-top:12px; border-top:1px solid var(--border-light);">
+            <label style="display:inline-flex; align-items:center; gap:8px; font-size:0.82rem; font-weight:700; cursor:pointer;">
+              <input id="inp-proj-verified" type="checkbox" checked style="width:16px; height:16px; accent-color:var(--emerald-700);" />
+              <span>Mark as Peer-Verified by Local Network</span>
+            </label>
+            <button type="submit" class="btn btn-primary">+ Append to Local Project Registry</button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Filter Pills & Project List -->
+      <div class="card">
+        <div class="filter-bar">
+          <div class="filter-pills" id="sdg-filter-pills">
+            <button type="button" class="filter-pill active" data-sdg="ALL">All</button>
+            <button type="button" class="filter-pill" data-sdg="SDG 13">SDG 13</button>
+            <button type="button" class="filter-pill" data-sdg="SDG 8">SDG 8</button>
+            <button type="button" class="filter-pill" data-sdg="SDG 10">SDG 10</button>
+            <button type="button" class="filter-pill" data-sdg="SDG 17">SDG 17</button>
+          </div>
+          <button type="button" id="btn-next-to-competency" class="btn btn-secondary btn-sm">
+            Next: Competency &amp; Roadmap &rarr;
+          </button>
+        </div>
+
+        <div id="projects-grid" class="grid-2"></div>
+      </div>
+    </section>
+
+    <!-- =================================================================== -->
+    <!-- TAB 3: AI COMPETENCY ASSESSMENT & BRIDGING ROADMAP                  -->
+    <!-- =================================================================== -->
+    <section id="panel-competency" class="tab-panel">
+      <div class="card">
+        <div class="section-header-row">
+          <div>
+            <span class="eyebrow">Step 3 &bull; Capacity &amp; Literacy Bridging (Target 13.3 &amp; 13.b)</span>
+            <h2 class="section-title">AI Competency Assessment &amp; 3-Phase Bridging Roadmap</h2>
+            <p class="section-desc">
+              Adjust the 5 local capacity sliders or +/- buttons to calculate real-time readiness on the interactive SVG competency chart and track milestones across the 3-phase bridging roadmap.
+            </p>
+          </div>
+          <div class="mini-kpi" style="min-width:170px; text-align:right;">
+            <div class="mini-kpi-label">Competency Score</div>
+            <div id="comp-score-big" class="mini-kpi-num" style="color:var(--emerald-700);">0%</div>
+            <div id="comp-tier-text" class="mini-kpi-sub">Baseline</div>
+          </div>
+        </div>
+
+        <div class="split-2">
+          <!-- Left: 5 Interactive Range Sliders + Step Buttons -->
+          <div>
+            <h3 style="font-size:0.9rem; font-weight:800; text-transform:uppercase; color:var(--text-muted); margin-bottom:12px;">
+              1. Local Network Competency Pillars (1–5 Scale)
+            </h3>
+            <div id="competency-sliders-list"></div>
+          </div>
+
+          <!-- Right: Interactive SVG Radar/Bar Visualization & 3-Phase Roadmap -->
+          <div>
+            <div style="background:var(--bg-subtle); border:1px solid var(--border-light); border-radius:var(--radius-md); padding:16px; margin-bottom:16px;">
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+                <h3 style="font-size:0.86rem; font-weight:800; text-transform:uppercase; color:var(--text-secondary);">Live Competency Radar &amp; Gap Profile</h3>
+                <span id="comp-gap-badge" class="tag-emerald">Balanced</span>
+              </div>
+              <!-- Pure Inline SVG Radar Chart (Zero External Libraries) -->
+              <div style="display:flex; justify-content:center;">
+                <svg id="competency-radar-svg" width="320" height="240" viewBox="0 0 320 240" aria-label="Competency Radar Chart"></svg>
+              </div>
+            </div>
+
+            <!-- 3-Phase Bridging Roadmap with Clickable Phase Tabs & Checklists -->
+            <div style="background:var(--bg-subtle); border:1px solid var(--border-light); border-radius:var(--radius-md); padding:16px;">
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+                <h3 style="font-size:0.86rem; font-weight:800; text-transform:uppercase; color:var(--text-secondary);">3-Phase Bridging Roadmap</h3>
+                <span id="roadmap-completion-badge" class="tag-emerald">0% Complete</span>
+              </div>
+
+              <div class="phase-tabs" id="roadmap-phase-tabs">
+                <button type="button" class="phase-tab-btn active" data-phase="1">Phase 1: Literacy</button>
+                <button type="button" class="phase-tab-btn" data-phase="2">Phase 2: AI &amp; Field</button>
+                <button type="button" class="phase-tab-btn" data-phase="3">Phase 3: Finance</button>
+              </div>
+
+              <div id="roadmap-checklist-container"></div>
+
+              <div style="display:flex; justify-content:flex-end; margin-top:12px;">
+                <button type="button" id="btn-next-to-policy" class="btn btn-primary btn-sm">
+                  Next: National Policy Alignment &rarr;
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =================================================================== -->
+    <!-- TAB 4: NATIONAL POLICY ON ENVIRONMENT MANAGEMENT                    -->
+    <!-- =================================================================== -->
+    <section id="panel-policy" class="tab-panel">
+      <div class="card">
+        <div class="section-header-row">
+          <div>
+            <span class="eyebrow">Step 4 &bull; Policy &amp; Finance Bridge (SDG 13.2, 13.a &amp; 17)</span>
+            <h2 class="section-title">National Policy on Environment Management &amp; Local Alignment</h2>
+            <p class="section-desc">
+              Set your network's compliance and alignment status across national environmental frameworks, then generate a concrete local-to-national policy &amp; climate finance bridging action plan.
+            </p>
+          </div>
+          <div class="mini-kpi" style="min-width:170px; text-align:right;">
+            <div class="mini-kpi-label">Policy Alignment Score</div>
+            <div id="policy-score-big" class="mini-kpi-num" style="color:var(--emerald-700);">0%</div>
+            <div class="mini-kpi-sub">Governance readiness</div>
+          </div>
+        </div>
+
+        <div class="split-2">
+          <!-- Left: 4 Interactive Policy Compliance Cards -->
+          <div>
+            <h3 style="font-size:0.9rem; font-weight:800; text-transform:uppercase; color:var(--text-muted); margin-bottom:12px;">
+              Environmental Policy &amp; Finance Frameworks
+            </h3>
+            <div id="policy-cards-list"></div>
+          </div>
+
+          <!-- Right: Action Plan Generator Output -->
+          <div>
+            <div style="background:var(--bg-subtle); border:1px solid var(--border-light); border-radius:var(--radius-md); padding:18px;">
+              <h3 style="font-size:0.95rem; font-weight:800; margin-bottom:6px;">Local-to-National Policy &amp; Finance Action Plan</h3>
+              <p style="font-size:0.8rem; color:var(--text-secondary); margin:0 0 14px;">
+                Generates tailored steps to close regulatory gaps and unlock devolved County Climate Change Funds (CCCF) and national adaptation grants.
+              </p>
+
+              <button type="button" id="btn-generate-policy-plan" class="btn btn-primary" style="width:100%; margin-bottom:16px;">
+                Generate Policy &amp; Finance Action Plan
+              </button>
+
+              <div id="policy-action-plan-output"></div>
+
+              <div style="display:flex; justify-content:flex-end; margin-top:16px; padding-top:12px; border-top:1px solid var(--border-light);">
+                <button type="button" id="btn-next-to-report" class="btn btn-secondary btn-sm">
+                  Next: View &amp; Sign Validation Report &rarr;
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =================================================================== -->
+    <!-- TAB 5: VALIDATION SIGN-OFF & EXPORT DOSSIER                         -->
+    <!-- =================================================================== -->
+    <section id="panel-report" class="tab-panel">
+      <div class="card">
+        <div class="section-header-row" style="padding-bottom:16px; border-bottom:1px solid var(--border-light);">
+          <div>
+            <span class="tag-emerald" style="margin-bottom:6px; display:inline-block;">HACKATHON TRACK 3 VALIDATION DOSSIER</span>
+            <h2 class="section-title">Planet Is Our Home &mdash; End-to-End Validation Report</h2>
+            <p id="report-subtitle" class="section-desc">
+              Aggregated ground-truth problem verification, local action metrics, competency readiness, and policy alignment across UN SDGs 13, 8, 10 &amp; 17.
+            </p>
+          </div>
+
+          <div class="no-print" style="display:flex; flex-wrap:wrap; gap:8px;">
+            <button type="button" id="btn-copy-summary" class="btn btn-primary">
+              Copy Validation Summary
+            </button>
+            <button type="button" id="btn-print-pdf" class="btn btn-outline">
+              Print / Save PDF
+            </button>
+          </div>
+        </div>
+
+        <!-- 4 Live Summary KPIs pulled from Tabs 1–4 -->
+        <div class="kpi-grid-4" style="margin:20px 0;">
+          <div class="mini-kpi">
+            <div class="mini-kpi-label">1. Problems Verified</div>
+            <div id="rep-kpi-prob" class="mini-kpi-num">0%</div>
+            <div id="rep-sub-prob" class="mini-kpi-sub">0 / 6 verified</div>
+          </div>
+          <div class="mini-kpi">
+            <div class="mini-kpi-label">2. Local Solutions</div>
+            <div id="rep-kpi-local" class="mini-kpi-num">0%</div>
+            <div id="rep-sub-local" class="mini-kpi-sub">0 verified actions</div>
+          </div>
+          <div class="mini-kpi">
+            <div class="mini-kpi-label">3. Competency</div>
+            <div id="rep-kpi-comp" class="mini-kpi-num">0%</div>
+            <div id="rep-sub-comp" class="mini-kpi-sub">0% roadmap done</div>
+          </div>
+          <div class="mini-kpi">
+            <div class="mini-kpi-label">4. Policy Alignment</div>
+            <div id="rep-kpi-policy" class="mini-kpi-num">0%</div>
+            <div id="rep-sub-policy" class="mini-kpi-sub">0 / 4 aligned</div>
+          </div>
+        </div>
+
+        <div class="split-2">
+          <!-- Left: Verified Problems & Impact Summary -->
+          <div style="background:var(--bg-subtle); border:1px solid var(--border-light); border-radius:var(--radius-md); padding:18px;">
+            <h3 style="font-size:0.9rem; font-weight:800; text-transform:uppercase; color:var(--text-secondary); margin-bottom:12px;">
+              Verified Ground-Truth Evidence Summary
+            </h3>
+            <div id="report-evidence-list"></div>
+          </div>
+
+          <!-- Right: Interactive Community Validator Sign-Off Form -->
+          <div style="background:var(--emerald-50); border:1px solid var(--emerald-200); border-radius:var(--radius-md); padding:18px;">
+            <h3 style="font-size:0.95rem; font-weight:800; color:var(--emerald-900); margin-bottom:6px;">
+              Community Validator Sign-Off
+            </h3>
+            <p style="font-size:0.8rem; color:var(--text-secondary); margin:0 0 14px;">
+              Certify that the verified problems, local interventions, and policy links in this dossier reflect lived community experience.
+            </p>
+
+            <form id="form-signoff">
+              <div class="form-group" style="margin-bottom:10px;">
+                <label for="inp-sign-name" class="form-label">Validator Name *</label>
+                <input id="inp-sign-name" type="text" class="form-control" required placeholder="Samahan Musa" />
+              </div>
+              <div class="form-group" style="margin-bottom:10px;">
+                <label for="inp-sign-role" class="form-label">Role / Local Network *</label>
+                <input id="inp-sign-role" type="text" class="form-control" required placeholder="Coordinator, Kakuma,Turkana West Climate & Youth Network" />
+              </div>
+              <div class="form-group" style="margin-bottom:14px;">
+                <label for="inp-sign-ward" class="form-label">Ward / Location *</label>
+                <input id="inp-sign-ward" type="text" class="form-control" required placeholder="Kakuma Ward 1, Turkana County" />
+              </div>
+              <button type="submit" class="btn btn-primary" style="width:100%;">
+                Sign-Off &amp; Certify Dossier
+              </button>
+            </form>
+
+            <div id="signoff-status-card" style="margin-top:14px; padding-top:12px; border-top:1px solid var(--emerald-200); font-size:0.8rem;">
+              <strong>Certification Status:</strong> Pending local network validator sign-off.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="site-footer no-print">
+    <div class="container" style="display:flex; flex-wrap:wrap; justify-content:space-between; gap:8px;">
+      <span><strong>Sustainability</strong> &bull; Track 3: Validation (Local Networks &amp; Experience Hackathon)</span>
+      <span>UN SDG 13 (Climate Action) &bull; SDG 8 (Decent Work) &bull; SDG 10 (Reduced Inequalities) &bull; SDG 17 (Partnerships)</span>
+    </div>
+  </footer>
+
+  <!-- ===================================================================== -->
+  <!-- VANILLA JAVASCRIPT APPLICATION CONTROLLER (100% SELF-CONTAINED)       -->
+  <!-- ===================================================================== -->
+  <script>
+    (function () {
+      'use strict';
+
+      // ---------------------------------------------------------------------
+      // 1. STATE & REFERENCE DATA
+      // ---------------------------------------------------------------------
+      const DEFAULT_PROBLEMS = [
+        {
+          id: 'prob-1',
+          code: '01',
+          title: 'Rising Greenhouse Gas Emissions',
+          sdgTag: 'SDG 13 & SDG 8',
+          evidence: 'Heavy reliance on firewood, charcoal, and diesel pumps due to limited off-grid clean energy.',
+          verified: false
+        },
+        {
+          id: 'prob-2',
+          code: '02',
+          title: 'Extreme Weather & Disasters',
+          sdgTag: 'SDG 13.1 & SDG 10',
+          evidence: 'Prolonged multi-season droughts followed by sudden flash floods along seasonal riverbeds.',
+          verified: false
+        },
+        {
+          id: 'prob-3',
+          code: '03',
+          title: 'Water & Food Insecurity',
+          sdgTag: 'SDG 13 & SDG 10',
+          evidence: 'Erratic rainfall, depleted pasture, and high post-harvest losses threatening household nutrition.',
+          verified: false
+        },
+        {
+          id: 'prob-4',
+          code: '04',
+          title: 'Policy & Planning Gaps',
+          sdgTag: 'SDG 13.2 & SDG 17',
+          evidence: 'Weak translation of national climate policies into ward-level land-use and drainage budgets.',
+          verified: false
+        },
+        {
+          id: 'prob-5',
+          code: '05',
+          title: 'Low Climate Literacy & Preparedness',
+          sdgTag: 'SDG 13.3 & SDG 8',
+          evidence: 'Seasonal forecasts rarely reach rural households in local languages with actionable guidance.',
+          verified: false
+        },
+        {
+          id: 'prob-6',
+          code: '06',
+          title: 'Unequal Finance & Local Capacity',
+          sdgTag: 'SDG 13.a/b & SDG 10',
+          evidence: 'Grassroots networks lack technical documentation to access devolved county or global climate funds.',
+          verified: false
+        }
+      ];
+
+      const SDG_DETAILS = [
+        {
+          id: 'sdg-13',
+          badge: 'UN SDG 13',
+          color: '#047857',
+          title: 'Climate Action',
+          summary: 'Strengthens local resilience to climate hazards while cutting GHG emissions.',
+          targets: 'Targets 13.1 (Resilience), 13.2 (Policy Integration), 13.3 (Literacy & Early Warning), 13.a/b (Finance & Capacity).',
+          metric: 'Tracks verified CO₂e reductions, flood channels cleared, and early-warning reach.'
+        },
+        {
+          id: 'sdg-8',
+          badge: 'UN SDG 8',
+          color: '#be123c',
+          title: 'Decent Work & Growth',
+          summary: 'Turns environmental restoration into dignified youth & community green jobs.',
+          targets: 'Targets 8.3 (Green Micro-Enterprises) & 8.5 (Full & Productive Youth Employment).',
+          metric: 'Tracks sustainable livelihoods in solar micro-grids, tree nurseries, and waste circularity.'
+        },
+        {
+          id: 'sdg-10',
+          badge: 'UN SDG 10',
+          color: '#a21caf',
+          title: 'Reduced Inequalities',
+          summary: 'Prioritizes marginalized, arid, and displaced communities disproportionately hit by climate shocks.',
+          targets: 'Targets 10.2 (Social & Economic Inclusion) & 10.b (Targeted Resource Flows).',
+          metric: 'Ensures women, youth, and ASAL ward committees co-own climate adaptation budgets.'
+        },
+        {
+          id: 'sdg-17',
+          badge: 'UN SDG 17',
+          color: '#1d4ed8',
+          title: 'Partnerships for Goals',
+          summary: 'Connects local experience networks with county climate funds and national ministries.',
+          targets: 'Targets 17.16 (Multi-Stakeholder Partnerships) & 17.18 (Disaggregated Local Data).',
+          metric: 'Bridges ground-verified community data directly into national NDC and county reporting.'
+        }
+      ];
+
+      const DEFAULT_COMPETENCIES = [
+        { id: 'comp-1', short: 'Early Warning', label: 'Climate Risk & Early Warning', score: 2 },
+        { id: 'comp-2', short: 'Water & Agro', label: 'Sustainable Water & Agroforestry', score: 2 },
+        { id: 'comp-3', short: 'Digital & AI', label: 'Green Digital & Data Literacy', score: 1 },
+        { id: 'comp-4', short: 'Circularity', label: 'Carbon & Waste Circularity', score: 2 },
+        { id: 'comp-5', short: 'Finance & Grants', label: 'Community Finance & Grant Readiness', score: 2 }
+      ];
+
+      const DEFAULT_ROADMAP = [
+        { id: 'rm-1', phase: 1, text: 'Translate seasonal weather alerts into local languages & community SMS groups', done: false },
+        { id: 'rm-2', phase: 1, text: 'Conduct ward-level climate vulnerability & hazard mapping with youth stewards', done: false },
+        { id: 'rm-3', phase: 2, text: 'Deploy mobile geo-tagging & AI-assisted soil/water monitoring logs', done: false },
+        { id: 'rm-4', phase: 2, text: 'Establish standardized SOPs for rainwater pans, agroforestry & circular waste', done: false },
+        { id: 'rm-5', phase: 3, text: 'Package verified local data into a County Climate Change Fund (CCCF) proposal', done: false },
+        { id: 'rm-6', phase: 3, text: 'Sign formal data-sharing MoU with County Environment Directorate (SDG 17)', done: false }
+      ];
+
+      const DEFAULT_POLICIES = [
+        {
+          id: 'pol-1',
+          code: 'NCCAP / NAP',
+          title: 'National Climate Change Action Plan & National Adaptation Plan',
+          desc: 'Integrates community water harvesting, drought resilience, and agroforestry into national adaptation targets.',
+          status: 'Gap Identified'
+        },
+        {
+          id: 'pol-2',
+          code: 'EMCA',
+          title: 'Environmental Management & Coordination Act (EMCA)',
+          desc: 'Aligns local waste circularity, riparian protection, and environmental impact audits with statutory compliance.',
+          status: 'Gap Identified'
+        },
+        {
+          id: 'pol-3',
+          code: 'CCCF',
+          title: 'County Climate Change Fund (CCCF) & Ward Planning',
+          desc: 'Unlocks devolved public climate finance for community-prioritized adaptation projects (SDG 10 & 13.a).',
+          status: 'Gap Identified'
+        },
+        {
+          id: 'pol-4',
+          code: 'UNFCCC NDCs',
+          title: 'Nationally Determined Contributions (Paris Agreement / SDG 13)',
+          desc: 'Aggregates grassroots CO₂e emission reductions and tree survival metrics into national climate reporting.',
+          status: 'Gap Identified'
+        }
+      ];
+
+      const state = {
+        activeTab: 'overview',
+        networkName: 'Unassigned Local Network',
+        isSampleLoaded: false,
+        problems: JSON.parse(JSON.stringify(DEFAULT_PROBLEMS)),
+        expandedSdgId: 'sdg-13',
+        projects: [],
+        sdgFilter: 'ALL',
+        competencies: JSON.parse(JSON.stringify(DEFAULT_COMPETENCIES)),
+        activePhase: 1,
+        roadmap: JSON.parse(JSON.stringify(DEFAULT_ROADMAP)),
+        policies: JSON.parse(JSON.stringify(DEFAULT_POLICIES)),
+        policyPlanGenerated: false,
+        signOff: { name: '', role: '', ward: '', date: '' },
+        modalTarget: null // { type: 'problem'|'project', id: string }
+      };
+
+      // ---------------------------------------------------------------------
+      // 2. TOAST & MODAL HELPERS
+      // ---------------------------------------------------------------------
+      function showToast(msg) {
+        const stack = document.getElementById('toast-stack');
+        if (!stack) return;
+        const item = document.createElement('div');
+        item.className = 'toast-item';
+        item.textContent = msg;
+        stack.appendChild(item);
+        setTimeout(() => {
+          item.style.opacity = '0';
+          item.style.transition = 'opacity 0.25s ease';
+          setTimeout(() => item.remove(), 260);
+        }, 2800);
+      }
+
+      function openEvidenceModal(type, id) {
+        const modal = document.getElementById('evidence-modal');
+        const subtitle = document.getElementById('modal-subtitle');
+        const input = document.getElementById('modal-evidence-input');
+        state.modalTarget = { type, id };
+
+        if (type === 'problem') {
+          const prob = state.problems.find(p => p.id === id);
+          if (!prob) return;
+          subtitle.textContent = `Problem ${prob.code}: ${prob.title}`;
+          input.value = prob.evidence;
+        } else if (type === 'project') {
+          const proj = state.projects.find(p => p.id === id);
+          if (!proj) return;
+          subtitle.textContent = `Local Project: ${proj.title}`;
+          input.value = proj.evidence;
+        }
+
+        modal.classList.add('open');
+        input.focus();
+      }
+
+      function closeEvidenceModal() {
+        document.getElementById('evidence-modal').classList.remove('open');
+        state.modalTarget = null;
+      }
+
+      function saveEvidenceModal() {
+        if (!state.modalTarget) return;
+        const val = document.getElementById('modal-evidence-input').value.trim();
+        if (!val) {
+          showToast('Please enter field evidence text before saving.');
+          return;
+        }
+
+        if (state.modalTarget.type === 'problem') {
+          state.problems = state.problems.map(p =>
+            p.id === state.modalTarget.id ? { ...p, evidence: val, verified: true } : p
+          );
+          showToast('Updated & verified ground-truth problem evidence.');
+        } else if (state.modalTarget.type === 'project') {
+          state.projects = state.projects.map(p =>
+            p.id === state.modalTarget.id ? { ...p, evidence: val } : p
+          );
+          showToast('Updated local project field evidence.');
+        }
+
+        closeEvidenceModal();
+        renderAll();
+      }
+
+      // ---------------------------------------------------------------------
+      // 3. SCORE CALCULATION ENGINE
+      // ---------------------------------------------------------------------
+      function calculateMetrics() {
+        const verifiedProbs = state.problems.filter(p => p.verified).length;
+        const probPct = Math.round((verifiedProbs / state.problems.length) * 100);
+
+        const totalProjects = state.projects.length;
+        const verifiedProjects = state.projects.filter(p => p.verified).length;
+        let localPct = 0;
+        if (totalProjects > 0) {
+          const countPart = Math.min(totalProjects / 3, 1) * 50;
+          const verifyPart = (verifiedProjects / totalProjects) * 50;
+          localPct = Math.round(countPart + verifyPart);
+        }
+
+        const compSum = state.competencies.reduce((acc, c) => acc + c.score, 0);
+        const compBase = (compSum / (state.competencies.length * 5)) * 70;
+        const doneRoad = state.roadmap.filter(r => r.done).length;
+        const roadPct = Math.round((doneRoad / state.roadmap.length) * 100);
+        const compPct = Math.round(compBase + (roadPct * 0.3));
+
+        const alignedCount = state.policies.filter(p => p.status === 'Aligned').length;
+        const progressCount = state.policies.filter(p => p.status === 'In Progress').length;
+        const policyPct = Math.round(((alignedCount * 1 + progressCount * 0.5) / state.policies.length) * 100);
+
+        const overallPct = Math.round((probPct * 0.25) + (localPct * 0.30) + (compPct * 0.20) + (policyPct * 0.25));
+
+        return {
+          verifiedProbs,
+          totalProbs: state.problems.length,
+          probPct,
+          totalProjects,
+          verifiedProjects,
+          localPct,
+          compPct,
+          roadPct,
+          alignedCount,
+          totalPolicies: state.policies.length,
+          policyPct,
+          overallPct
+        };
+      }
+
+      // ---------------------------------------------------------------------
+      // 4. SAMPLE DATA & RESET ACTIONS
+      // ---------------------------------------------------------------------
+      function loadSampleProfile() {
+        state.isSampleLoaded = true;
+        state.networkName = 'Turkana West / Kakuma Community Resilience Network (ASAL Zone)';
+        state.problems = DEFAULT_PROBLEMS.map(p => ({ ...p, verified: true }));
+        state.projects = [
+          {
+            id: 'proj-s1',
+            title: 'Tarach Basin Sub-Surface Sand Dam & Rainwater Pans',
+            category: 'Water & Food Insecurity',
+            sdg: 'SDG 13',
+            households: 340,
+            jobs: 28,
+            co2: 65,
+            evidence: 'Kakuma Ward 1 — Geo-tagged water depth gauges, 45 household water logs & Ward Admin sign-off.',
+            verified: true
+          },
+          {
+            id: 'proj-s2',
+            title: 'Dryland Agroforestry & Drought-Tolerant Sorghum Gardens',
+            category: 'Water & Food Insecurity',
+            sdg: 'SDG 8',
+            households: 260,
+            jobs: 42,
+            co2: 110,
+            evidence: 'Kalobeyei Host & Settlement Zone — 4,200 indigenous seedlings tracked at 86% survival; youth co-op ledger.',
+            verified: true
+          },
+          {
+            id: 'proj-s3',
+            title: 'Solar Micro-Grid & Briquette Clean Cooking Enterprise',
+            category: 'Rising Greenhouse Gas Emissions',
+            sdg: 'SDG 13',
+            households: 190,
+            jobs: 22,
+            co2: 145,
+            evidence: 'Kakuma Market Center — Replaced 18 tons/month of firewood; metered solar cold-storage receipts.',
+            verified: true
+          },
+          {
+            id: 'proj-s4',
+            title: 'Laga Floodplain Drainage Clearing & Plastic-to-Paver Hub',
+            category: 'Extreme Weather & Disasters',
+            sdg: 'SDG 10',
+            households: 410,
+            jobs: 35,
+            co2: 52,
+            evidence: 'Laga Corridor — 2.4 km storm channels cleared pre-rains; 62% women and youth cooperative ownership.',
+            verified: true
+          }
+        ];
+        state.competencies = [
+          { id: 'comp-1', short: 'Early Warning', label: 'Climate Risk & Early Warning', score: 4 },
+          { id: 'comp-2', short: 'Water & Agro', label: 'Sustainable Water & Agroforestry', score: 5 },
+          { id: 'comp-3', short: 'Digital & AI', label: 'Green Digital & Data Literacy', score: 3 },
+          { id: 'comp-4', short: 'Circularity', label: 'Carbon & Waste Circularity', score: 4 },
+          { id: 'comp-5', short: 'Finance & Grants', label: 'Community Finance & Grant Readiness', score: 4 }
+        ];
+        state.roadmap = DEFAULT_ROADMAP.map((r, i) => ({ ...r, done: i < 5 }));
+        state.policies = [
+          { ...DEFAULT_POLICIES[0], status: 'Aligned' },
+          { ...DEFAULT_POLICIES[1], status: 'Aligned' },
+          { ...DEFAULT_POLICIES[2], status: 'In Progress' },
+          { ...DEFAULT_POLICIES[3], status: 'Aligned' }
+        ];
+        state.policyPlanGenerated = true;
+        state.signOff = {
+          name: 'Amina Lokiru',
+          role: 'Coordinator, Turkana West Climate & Youth Network',
+          ward: 'Kakuma Ward 1, Turkana County',
+          date: 'Certified Nov 25, 2026'
+        };
+
+        document.getElementById('inp-sign-name').value = state.signOff.name;
+        document.getElementById('inp-sign-role').value = state.signOff.role;
+        document.getElementById('inp-sign-ward').value = state.signOff.ward;
+
+        const banner = document.getElementById('profile-banner');
+        banner.classList.remove('hidden');
+        document.getElementById('banner-network-name').textContent = state.networkName;
+
+        renderAll();
+        showToast('Sample Environmental Profile loaded across all 5 tabs!');
+      }
+
+      function resetDemo() {
+        state.isSampleLoaded = false;
+        state.networkName = 'Unassigned Local Network';
+        state.problems = JSON.parse(JSON.stringify(DEFAULT_PROBLEMS));
+        state.projects = [];
+        state.sdgFilter = 'ALL';
+        state.competencies = JSON.parse(JSON.stringify(DEFAULT_COMPETENCIES));
+        state.activePhase = 1;
+        state.roadmap = JSON.parse(JSON.stringify(DEFAULT_ROADMAP));
+        state.policies = JSON.parse(JSON.stringify(DEFAULT_POLICIES));
+        state.policyPlanGenerated = false;
+        state.signOff = { name: '', role: '', ward: '', date: '' };
+
+        document.getElementById('inp-sign-name').value = '';
+        document.getElementById('inp-sign-role').value = '';
+        document.getElementById('inp-sign-ward').value = '';
+        document.getElementById('profile-banner').classList.add('hidden');
+
+        renderAll();
+        showToast('Demo data reset to clean baseline.');
+      }
+
+      // ---------------------------------------------------------------------
+      // 5. TAB NAVIGATION
+      // ---------------------------------------------------------------------
+      function switchTab(tabName) {
+        state.activeTab = tabName;
+
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+          btn.classList.toggle('active', btn.getAttribute('data-tab') === tabName);
+        });
+
+        document.querySelectorAll('.tab-panel').forEach(panel => {
+          panel.classList.toggle('active', panel.id === `panel-${tabName}`);
+        });
+
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        renderAll();
+      }
+
+      // ---------------------------------------------------------------------
+      // 6. RENDER FUNCTIONS PER TAB
+      // ---------------------------------------------------------------------
+      function renderOverview(metrics) {
+        document.getElementById('header-score').textContent = `${metrics.overallPct}%`;
+        document.getElementById('snap-problems').textContent = `${metrics.verifiedProbs} / ${metrics.totalProbs}`;
+        document.getElementById('snap-projects').textContent = `${metrics.verifiedProjects} / ${metrics.totalProjects}`;
+        document.getElementById('snap-competency').textContent = `${metrics.compPct}%`;
+        document.getElementById('snap-policy').textContent = `${metrics.policyPct}%`;
+        document.getElementById('snap-overall-text').textContent = `${metrics.overallPct}%`;
+        document.getElementById('snap-overall-bar').style.width = `${metrics.overallPct}%`;
+
+        // Render 6 Problem Cards
+        const grid = document.getElementById('problems-grid');
+        grid.innerHTML = state.problems.map(prob => `
+          <div class="problem-card ${prob.verified ? 'verified' : ''}">
+            <div>
+              <div class="card-top-meta">
+                <span class="tag-emerald">Problem ${prob.code}</span>
+                <span class="tag-gray">${prob.sdgTag}</span>
+              </div>
+              <h3 style="font-size:1rem; font-weight:800;">${prob.title}</h3>
+              <div class="evidence-box">
+                <strong>Field Evidence:</strong> ${prob.evidence}
+              </div>
+            </div>
+            <div class="card-btn-row">
+              <button type="button" class="btn ${prob.verified ? 'btn-primary' : 'btn-outline'} btn-sm" style="flex:1;" data-action="toggle-problem" data-id="${prob.id}">
+                ${prob.verified ? '&#10003; Verified on Ground' : 'Verify on Ground'}
+              </button>
+              <button type="button" class="btn btn-outline btn-sm" data-action="edit-problem-evidence" data-id="${prob.id}">
+                Edit Note
+              </button>
+            </div>
+          </div>
+        `).join('');
+
+        // Render 4 Expandable SDG Cards
+        const sdgGrid = document.getElementById('sdg-cards-grid');
+        sdgGrid.innerHTML = SDG_DETAILS.map(sdg => {
+          const isOpen = state.expandedSdgId === sdg.id;
+          return `
+            <button type="button" class="sdg-card ${isOpen ? 'expanded' : ''}" data-action="toggle-sdg-card" data-id="${sdg.id}">
+              <div>
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+                  <span class="sdg-badge" style="background:${sdg.color};">${sdg.badge}</span>
+                  <span style="font-size:0.74rem; font-weight:700; color:var(--text-muted);">${isOpen ? 'Hide Details ▲' : 'Expand ▼'}</span>
+                </div>
+                <h3 style="font-size:1rem; font-weight:800; margin-bottom:4px;">${sdg.title}</h3>
+                <p style="font-size:0.8rem; color:var(--text-secondary); margin:0;">${sdg.summary}</p>
+              </div>
+              ${isOpen ? `
+                <div class="sdg-detail-drawer">
+                  <p style="margin:0 0 6px;"><strong>UN Targets:</strong> ${sdg.targets}</p>
+                  <p style="margin:0; color:var(--emerald-800);"><strong>Validation Metric:</strong> ${sdg.metric}</p>
+                </div>
+              ` : ''}
+            </button>
+          `;
+        }).join('');
+      }
+
+      function renderLocalProjects() {
+        const total = state.projects.length;
+        const verified = state.projects.filter(p => p.verified).length;
+        const households = state.projects.reduce((s, p) => s + Number(p.households || 0), 0);
+        const jobs = state.projects.reduce((s, p) => s + Number(p.jobs || 0), 0);
+        const co2 = state.projects.reduce((s, p) => s + Number(p.co2 || 0), 0);
+
+        document.getElementById('kpi-proj-total').textContent = total;
+        document.getElementById('kpi-proj-verified').textContent = `${verified} peer-verified`;
+        document.getElementById('kpi-proj-households').textContent = households.toLocaleString();
+        document.getElementById('kpi-proj-jobs').textContent = jobs.toLocaleString();
+        document.getElementById('kpi-proj-co2').textContent = `${co2.toLocaleString()} t`;
+
+        // Update filter pills
+        document.querySelectorAll('#sdg-filter-pills .filter-pill').forEach(pill => {
+          pill.classList.toggle('active', pill.getAttribute('data-sdg') === state.sdgFilter);
+        });
+
+        const filtered = state.sdgFilter === 'ALL'
+          ? state.projects
+          : state.projects.filter(p => p.sdg === state.sdgFilter);
+
+        const grid = document.getElementById('projects-grid');
+        if (filtered.length === 0) {
+          grid.innerHTML = `
+            <div style="grid-column:1/-1; text-align:center; padding:32px 16px; background:var(--bg-subtle); border:1.5px dashed var(--border-strong); border-radius:var(--radius-md);">
+              <p style="font-weight:800; margin:0 0 6px;">No local projects logged under "${state.sdgFilter}" yet.</p>
+              <p style="font-size:0.82rem; color:var(--text-secondary); margin:0 0 14px;">Add a new community project above or load the sample Turkana West / Kakuma profile.</p>
+              <button type="button" class="btn btn-primary btn-sm" data-action="trigger-sample">Load Sample Environmental Profile</button>
+            </div>
+          `;
+          return;
+        }
+
+        grid.innerHTML = filtered.map(proj => `
+          <div class="problem-card ${proj.verified ? 'verified' : ''}">
+            <div>
+              <div class="card-top-meta">
+                <span class="tag-emerald">${proj.sdg}</span>
+                <span class="tag-gray">${proj.category}</span>
+              </div>
+              <h3 style="font-size:1.02rem; font-weight:800;">${proj.title}</h3>
+              <div class="evidence-box">
+                <strong>Field Evidence:</strong> ${proj.evidence}
+              </div>
+            </div>
+            <div>
+              <div class="project-metrics-strip">
+                <div><span style="display:block; color:var(--text-muted); font-size:0.68rem;">Households</span><strong>${proj.households}</strong></div>
+                <div><span style="display:block; color:var(--text-muted); font-size:0.68rem;">Green Jobs</span><strong>${proj.jobs}</strong></div>
+                <div><span style="display:block; color:var(--text-muted); font-size:0.68rem;">CO₂e / yr</span><strong style="color:var(--emerald-700);">${proj.co2} t</strong></div>
+              </div>
+              <div class="card-btn-row">
+                <button type="button" class="btn ${proj.verified ? 'btn-primary' : 'btn-outline'} btn-sm" style="flex:1;" data-action="toggle-project-verify" data-id="${proj.id}">
+                  ${proj.verified ? '&#10003; Peer-Verified Action' : 'Peer Verify Action'}
+                </button>
+                <button type="button" class="btn btn-outline btn-sm" data-action="edit-project-evidence" data-id="${proj.id}">
+                  View / Edit Evidence
+                </button>
+              </div>
+            </div>
+          </div>
+        `).join('');
+      }
+
+      function renderRadarSvg() {
+        const svg = document.getElementById('competency-radar-svg');
+        if (!svg) return;
+        const cx = 160;
+        const cy = 120;
+        const maxR = 78;
+        const n = state.competencies.length;
+
+        let ringsHtml = '';
+        for (let level = 1; level <= 5; level++) {
+          const r = (maxR / 5) * level;
+          const pts = [];
+          for (let i = 0; i < n; i++) {
+            const angle = (Math.PI * 2 * i) / n - Math.PI / 2;
+            pts.push(`${(cx + r * Math.cos(angle)).toFixed(1)},${(cy + r * Math.sin(angle)).toFixed(1)}`);
+          }
+          ringsHtml += `<polygon points="${pts.join(' ')}" fill="none" stroke="#cbd5e1" stroke-width="1" />`;
+        }
+
+        let axesHtml = '';
+        const dataPts = [];
+        state.competencies.forEach((c, i) => {
+          const angle = (Math.PI * 2 * i) / n - Math.PI / 2;
+          const xEnd = cx + maxR * Math.cos(angle);
+          const yEnd = cy + maxR * Math.sin(angle);
+          axesHtml += `<line x1="${cx}" y1="${cy}" x2="${xEnd.toFixed(1)}" y2="${yEnd.toFixed(1)}" stroke="#cbd5e1" stroke-width="1" />`;
+
+          const rVal = (maxR / 5) * c.score;
+          const vx = cx + rVal * Math.cos(angle);
+          const vy = cy + rVal * Math.sin(angle);
+          dataPts.push(`${vx.toFixed(1)},${vy.toFixed(1)}`);
+
+          const lx = cx + (maxR + 22) * Math.cos(angle);
+          const ly = cy + (maxR + 16) * Math.sin(angle);
+          axesHtml += `<text x="${lx.toFixed(1)}" y="${ly.toFixed(1)}" text-anchor="middle" dominant-baseline="middle" font-size="10" font-weight="700" fill="#334155">${c.short} (${c.score})</text>`;
+        });
+
+        const dataPolygon = `<polygon points="${dataPts.join(' ')}" fill="rgba(5, 150, 105, 0.25)" stroke="#047857" stroke-width="2.5" />`;
+        svg.innerHTML = ringsHtml + axesHtml + dataPolygon;
+      }
+
+      function renderCompetency(metrics) {
+        document.getElementById('comp-score-big').textContent = `${metrics.compPct}%`;
+        document.getElementById('comp-tier-text').textContent =
+          metrics.compPct >= 80 ? 'Resilience Leader' : metrics.compPct >= 55 ? 'Growing Practitioner' : 'Foundational Stage';
+
+        const lowest = [...state.competencies].sort((a, b) => a.score - b.score)[0];
+        document.getElementById('comp-gap-badge').textContent = `Priority Gap: ${lowest.short} (${lowest.score}/5)`;
+
+        // Render Sliders + Step Buttons
+        const list = document.getElementById('competency-sliders-list');
+        list.innerHTML = state.competencies.map(c => `
+          <div class="slider-card">
+            <div class="slider-header">
+              <label for="rng-${c.id}" style="font-size:0.84rem; font-weight:700;">${c.label}</label>
+              <span class="tag-emerald">${c.score} / 5</span>
+            </div>
+            <div class="stepper-controls">
+              <button type="button" class="step-btn" data-action="step-comp" data-id="${c.id}" data-delta="-1" aria-label="Decrease ${c.label}">&minus;</button>
+              <input id="rng-${c.id}" type="range" min="1" max="5" value="${c.score}" data-action="slide-comp" data-id="${c.id}" />
+              <button type="button" class="step-btn" data-action="step-comp" data-id="${c.id}" data-delta="1" aria-label="Increase ${c.label}">+</button>
+            </div>
+          </div>
+        `).join('');
+
+        renderRadarSvg();
+
+        // Render Roadmap Phase Tabs & Checklist
+        document.getElementById('roadmap-completion-badge').textContent = `${metrics.roadPct}% Complete`;
+        document.querySelectorAll('#roadmap-phase-tabs .phase-tab-btn').forEach(btn => {
+          btn.classList.toggle('active', Number(btn.getAttribute('data-phase')) === state.activePhase);
+        });
+
+        const phaseItems = state.roadmap.filter(r => r.phase === state.activePhase);
+        const checkContainer = document.getElementById('roadmap-checklist-container');
+        checkContainer.innerHTML = phaseItems.map(item => `
+          <div class="checklist-item ${item.done ? 'checked' : ''}" role="button" tabindex="0" data-action="toggle-roadmap" data-id="${item.id}">
+            <input type="checkbox" ${item.done ? 'checked' : ''} style="margin-top:2px; width:16px; height:16px; accent-color:var(--emerald-700); pointer-events:none;" />
+            <span style="font-size:0.82rem; font-weight:600; ${item.done ? 'text-decoration:line-through; color:var(--text-muted);' : ''}">${item.text}</span>
+          </div>
+        `).join('');
+      }
+
+      function renderPolicy(metrics) {
+        document.getElementById('policy-score-big').textContent = `${metrics.policyPct}%`;
+
+        const list = document.getElementById('policy-cards-list');
+        list.innerHTML = state.policies.map(pol => `
+          <div class="policy-card">
+            <div style="display:flex; align-items:center; gap:8px; margin-bottom:4px;">
+              <span class="tag-emerald">${pol.code}</span>
+              <h4 style="font-size:0.95rem; font-weight:800;">${pol.title}</h4>
+            </div>
+            <p style="font-size:0.8rem; color:var(--text-secondary); margin:0;">${pol.desc}</p>
+            <div class="status-pill-group">
+              <button type="button" class="status-choice ${pol.status === 'Aligned' ? 'selected-aligned' : ''}" data-action="set-policy-status" data-id="${pol.id}" data-status="Aligned">
+                &#10003; Aligned
+              </button>
+              <button type="button" class="status-choice ${pol.status === 'In Progress' ? 'selected-progress' : ''}" data-action="set-policy-status" data-id="${pol.id}" data-status="In Progress">
+                In Progress
+              </button>
+              <button type="button" class="status-choice ${pol.status === 'Gap Identified' ? 'selected-gap' : ''}" data-action="set-policy-status" data-id="${pol.id}" data-status="Gap Identified">
+                Gap Identified
+              </button>
+            </div>
+          </div>
+        `).join('');
+
+        const out = document.getElementById('policy-action-plan-output');
+        if (!state.policyPlanGenerated) {
+          out.innerHTML = `
+            <div style="background:#ffffff; border:1px dashed var(--border-strong); border-radius:var(--radius-sm); padding:14px; font-size:0.8rem; color:var(--text-secondary);">
+              Click <strong>Generate Policy &amp; Finance Action Plan</strong> above to synthesize bridging steps based on your selected policy statuses.
+            </div>
+          `;
+          return;
+        }
+
+        const actions = state.policies.map(pol => {
+          if (pol.status === 'Aligned') {
+            return `<li><strong>${pol.code} (Aligned):</strong> Submit quarterly verified household &amp; CO₂e logs to maintain national/county registry recognition.</li>`;
+          }
+          if (pol.status === 'In Progress') {
+            return `<li><strong>${pol.code} (In Progress):</strong> Attach signed community dossier (Tab 5) to finalize Ward Climate Committee approval &amp; tranche release.</li>`;
+          }
+          return `<li><strong>${pol.code} (Gap Identified):</strong> Convene local network and Ward Environment Officer to map ground evidence into ${pol.code} compliance checklists.</li>`;
+        }).join('');
+
+        out.innerHTML = `
+          <div style="background:#ffffff; border:1px solid var(--emerald-200); border-radius:var(--radius-sm); padding:14px;">
+            <div style="font-size:0.78rem; font-weight:800; color:var(--emerald-800); margin-bottom:8px;">
+              GENERATED LOCAL-TO-NATIONAL BRIDGING PLAN:
+            </div>
+            <ul style="margin:0; padding-left:18px; font-size:0.8rem; color:var(--text-primary); display:flex; flex-direction:column; gap:8px;">
+              ${actions}
+            </ul>
+          </div>
+        `;
+      }
+
+      function renderReport(metrics) {
+        document.getElementById('report-subtitle').textContent =
+          `Network: ${state.networkName} • Overall Track 3 Validation Score: ${metrics.overallPct}%`;
+
+        document.getElementById('rep-kpi-prob').textContent = `${metrics.probPct}%`;
+        document.getElementById('rep-sub-prob').textContent = `${metrics.verifiedProbs} / ${metrics.totalProbs} verified on ground`;
+
+        document.getElementById('rep-kpi-local').textContent = `${metrics.localPct}%`;
+        document.getElementById('rep-sub-local').textContent = `${metrics.verifiedProjects} verified of ${metrics.totalProjects} projects`;
+
+        document.getElementById('rep-kpi-comp').textContent = `${metrics.compPct}%`;
+        document.getElementById('rep-sub-comp').textContent = `${metrics.roadPct}% bridging roadmap done`;
+
+        document.getElementById('rep-kpi-policy').textContent = `${metrics.policyPct}%`;
+        document.getElementById('rep-sub-policy').textContent = `${metrics.alignedCount} / ${metrics.totalPolicies} policies aligned`;
+
+        const evList = document.getElementById('report-evidence-list');
+        evList.innerHTML = state.problems.map(p => `
+          <div style="display:flex; justify-content:space-between; align-items:center; gap:8px; background:#ffffff; border:1px solid var(--border-light); border-radius:8px; padding:9px 12px; margin-bottom:8px; font-size:0.8rem;">
+            <div>
+              <strong>${p.code}. ${p.title}</strong>
+              <span style="color:var(--text-muted); font-size:0.74rem; display:block;">${p.evidence}</span>
+            </div>
+            <span class="${p.verified ? 'tag-emerald' : 'tag-gray'}" style="flex-shrink:0;">
+              ${p.verified ? 'Verified' : 'Pending'}
+            </span>
+          </div>
+        `).join('');
+
+        const signCard = document.getElementById('signoff-status-card');
+        if (state.signOff.name) {
+          signCard.innerHTML = `
+            <div style="background:#ffffff; border:1px solid var(--emerald-600); border-radius:8px; padding:10px 12px;">
+              <div style="font-weight:800; color:var(--emerald-800);">&#10003; CERTIFIED COMMUNITY ATTESTATION</div>
+              <div style="font-weight:700; margin-top:3px;">${state.signOff.name}</div>
+              <div style="color:var(--text-secondary);">${state.signOff.role} &bull; ${state.signOff.ward}</div>
+              <div style="font-size:0.72rem; color:var(--emerald-700); margin-top:2px;">${state.signOff.date}</div>
+            </div>
+          `;
+        } else {
+          signCard.innerHTML = `<strong>Certification Status:</strong> Pending local network validator sign-off.`;
+        }
+      }
+
+      function renderAll() {
+        const metrics = calculateMetrics();
+        renderOverview(metrics);
+        renderLocalProjects();
+        renderCompetency(metrics);
+        renderPolicy(metrics);
+        renderReport(metrics);
+      }
+
+      // ---------------------------------------------------------------------
+      // 7. BULLETPROOF EVENT DELEGATION & DIRECT LISTENERS
+      // ---------------------------------------------------------------------
+      function bindEvents() {
+        // Header & Hero buttons
+        document.getElementById('btn-brand-home').addEventListener('click', () => switchTab('overview'));
+        document.getElementById('btn-load-sample').addEventListener('click', loadSampleProfile);
+        document.getElementById('btn-inline-sample').addEventListener('click', loadSampleProfile);
+        document.getElementById('btn-reset-demo').addEventListener('click', resetDemo);
+
+        // Top 5 Navigation Tabs
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+          btn.addEventListener('click', () => switchTab(btn.getAttribute('data-tab')));
+        });
+
+        // Hero CTAs
+        document.getElementById('btn-hero-verify-solution').addEventListener('click', () => switchTab('local'));
+        document.getElementById('btn-hero-verify-problem').addEventListener('click', () => {
+          const card = document.getElementById('problem-verification-card');
+          if (card) {
+            card.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            card.classList.add('highlight-pulse');
+            setTimeout(() => card.classList.remove('highlight-pulse'), 1400);
+          }
+        });
+
+        document.getElementById('btn-verify-all-problems').addEventListener('click', () => {
+          state.problems = state.problems.map(p => ({ ...p, verified: true }));
+          renderAll();
+          showToast('All 6 real-world climate & equity problems verified!');
+        });
+
+        // Tab 2: Toggle Form & Submit Project
+        document.getElementById('btn-toggle-project-form').addEventListener('click', () => {
+          document.getElementById('new-project-form-card').classList.toggle('hidden');
+        });
+
+        document.getElementById('form-add-project').addEventListener('submit', e => {
+          e.preventDefault();
+          const title = document.getElementById('inp-proj-title').value.trim();
+          const category = document.getElementById('inp-proj-category').value;
+          const sdg = document.getElementById('inp-proj-sdg').value;
+          const households = parseInt(document.getElementById('inp-proj-households').value, 10) || 0;
+          const jobs = parseInt(document.getElementById('inp-proj-jobs').value, 10) || 0;
+          const co2 = parseInt(document.getElementById('inp-proj-co2').value, 10) || 0;
+          const evidence = document.getElementById('inp-proj-evidence').value.trim();
+          const verified = document.getElementById('inp-proj-verified').checked;
+
+          if (!title || !evidence) return;
+
+          state.projects.unshift({
+            id: 'proj-' + Date.now(),
+            title,
+            category,
+            sdg,
+            households,
+            jobs,
+            co2,
+            evidence,
+            verified
+          });
+
+          e.target.reset();
+          document.getElementById('inp-proj-households').value = 150;
+          document.getElementById('inp-proj-jobs').value = 18;
+          document.getElementById('inp-proj-co2').value = 42;
+          document.getElementById('inp-proj-verified').checked = true;
+
+          renderAll();
+          showToast(`Added local project: "${title}"`);
+        });
+
+        // Tab 2 Filter Pills
+        document.getElementById('sdg-filter-pills').addEventListener('click', e => {
+          const pill = e.target.closest('.filter-pill');
+          if (!pill) return;
+          state.sdgFilter = pill.getAttribute('data-sdg');
+          renderLocalProjects();
+        });
+
+        // Next Step Buttons
+        document.getElementById('btn-next-to-competency').addEventListener('click', () => switchTab('competency'));
+        document.getElementById('btn-next-to-policy').addEventListener('click', () => switchTab('policy'));
+        document.getElementById('btn-next-to-report').addEventListener('click', () => switchTab('report'));
+
+        // Tab 3 Phase Tabs
+        document.getElementById('roadmap-phase-tabs').addEventListener('click', e => {
+          const tab = e.target.closest('.phase-tab-btn');
+          if (!tab) return;
+          state.activePhase = Number(tab.getAttribute('data-phase'));
+          renderCompetency(calculateMetrics());
+        });
+
+        // Tab 3 Range Sliders (live input event)
+        document.getElementById('competency-sliders-list').addEventListener('input', e => {
+          if (e.target.getAttribute('data-action') === 'slide-comp') {
+            const id = e.target.getAttribute('data-id');
+            const val = parseInt(e.target.value, 10);
+            state.competencies = state.competencies.map(c => c.id === id ? { ...c, score: val } : c);
+            renderAll();
+          }
+        });
+
+        // Tab 4 Generate Action Plan
+        document.getElementById('btn-generate-policy-plan').addEventListener('click', () => {
+          state.policyPlanGenerated = true;
+          renderPolicy(calculateMetrics());
+          showToast('Local-to-National Policy & Finance Action Plan generated!');
+        });
+
+        // Tab 5 Sign-Off Form, Copy & Print
+        document.getElementById('form-signoff').addEventListener('submit', e => {
+          e.preventDefault();
+          const name = document.getElementById('inp-sign-name').value.trim();
+          const role = document.getElementById('inp-sign-role').value.trim();
+          const ward = document.getElementById('inp-sign-ward').value.trim();
+          if (!name || !role || !ward) return;
+          state.signOff = { name, role, ward, date: 'Certified Nov 25, 2026' };
+          renderReport(calculateMetrics());
+          showToast('Validation Dossier signed & certified!');
+        });
+
+        document.getElementById('btn-copy-summary').addEventListener('click', () => {
+          const m = calculateMetrics();
+          const text = [
+            `PLANET IS OUR HOME — TRACK 3 VALIDATION DOSSIER`,
+            `Network: ${state.networkName}`,
+            `Overall Validation Readiness: ${m.overallPct}%`,
+            `1. Problems Verified: ${m.verifiedProbs}/${m.totalProbs} (${m.probPct}%)`,
+            `2. Local Env. Projects: ${m.verifiedProjects}/${m.totalProjects} verified (${m.localPct}%)`,
+            `3. AI Competency & Roadmap: ${m.compPct}% (${m.roadPct}% roadmap done)`,
+            `4. National Policy Alignment: ${m.alignedCount}/${m.totalPolicies} aligned (${m.policyPct}%)`,
+            state.signOff.name ? `5. Signed By: ${state.signOff.name} (${state.signOff.role}, ${state.signOff.ward})` : `5. Signed By: Pending`
+          ].join('\n');
+
+          const ta = document.createElement('textarea');
+          ta.value = text;
+          document.body.appendChild(ta);
+          ta.select();
+          try {
+            document.execCommand('copy');
+            showToast('Validation Summary copied to clipboard!');
+          } catch (err) {
+            showToast('Use Print / Save PDF to export dossier.');
+          }
+          document.body.removeChild(ta);
+        });
+
+        document.getElementById('btn-print-pdf').addEventListener('click', () => window.print());
+
+        // Modal Buttons
+        document.getElementById('btn-close-modal').addEventListener('click', closeEvidenceModal);
+        document.getElementById('btn-cancel-modal').addEventListener('click', closeEvidenceModal);
+        document.getElementById('btn-save-modal').addEventListener('click', saveEvidenceModal);
+        document.getElementById('evidence-modal').addEventListener('click', e => {
+          if (e.target.id === 'evidence-modal') closeEvidenceModal();
+        });
+
+        // Global Delegated Click Handler for Dynamic Cards, Steppers, Checklists & Policy Pills
+        document.body.addEventListener('click', e => {
+          const trigger = e.target.closest('[data-action]');
+          if (!trigger) return;
+
+          const action = trigger.getAttribute('data-action');
+          const id = trigger.getAttribute('data-id');
+
+          if (action === 'toggle-problem') {
+            state.problems = state.problems.map(p => p.id === id ? { ...p, verified: !p.verified } : p);
+            renderAll();
+            showToast('Updated ground-truth problem verification.');
+          } else if (action === 'edit-problem-evidence') {
+            openEvidenceModal('problem', id);
+          } else if (action === 'toggle-sdg-card') {
+            state.expandedSdgId = state.expandedSdgId === id ? null : id;
+            renderOverview(calculateMetrics());
+          } else if (action === 'toggle-project-verify') {
+            state.projects = state.projects.map(p => p.id === id ? { ...p, verified: !p.verified } : p);
+            renderAll();
+            showToast('Updated local project peer-verification status.');
+          } else if (action === 'edit-project-evidence') {
+            openEvidenceModal('project', id);
+          } else if (action === 'trigger-sample') {
+            loadSampleProfile();
+          } else if (action === 'step-comp') {
+            const delta = parseInt(trigger.getAttribute('data-delta'), 10);
+            state.competencies = state.competencies.map(c => {
+              if (c.id !== id) return c;
+              const next = Math.min(5, Math.max(1, c.score + delta));
+              return { ...c, score: next };
+            });
+            renderAll();
+          } else if (action === 'toggle-roadmap') {
+            state.roadmap = state.roadmap.map(r => r.id === id ? { ...r, done: !r.done } : r);
+            renderAll();
+          } else if (action === 'set-policy-status') {
+            const status = trigger.getAttribute('data-status');
+            state.policies = state.policies.map(pol => pol.id === id ? { ...pol, status } : pol);
+            renderAll();
+            showToast(`Policy status updated to "${status}".`);
+          }
+        });
+      }
+
+      // Initialize immediately on DOMContentLoaded
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', () => {
+          bindEvents();
+          renderAll();
+        });
+      } else {
+        bindEvents();
+        renderAll();
+      }
+    })();
+  </script>
+</body>
+</html>
